@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Cuenta Regresiva! Alto Rendimiento Empresarial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+    
+    <audio id="audioFondo" controls style="display: none;" loop>     
+      <source src="./mi-audio.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <style>
+        /* ---------------------------------------------------- */
+        /* ESTILOS GENERALES Y FONDO MEJORADOS */
+        /* ---------------------------------------------------- */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #0f1d44 0%, #1e3c72 100%); 
+            color: white;
+            font-family: 'Poppins', sans-serif; 
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden; 
+        }
+        
+        /* ---------------------------------------------------- */
+        /* CONTENEDORES DE INFORMACIÓN */
+        /* ---------------------------------------------------- */
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.1); 
+            padding: 20px 40px;
+            border-radius: 10px; 
+            backdrop-filter: blur(8px); 
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+        }
+
+        #titulo-presentacion {
+            font-size: clamp(1.8em, 4vw, 3.5em); 
+            font-weight: 800; 
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3); 
+            margin: 0;
+            animation: pulse-title 4s infinite alternate;
+        }
+
+        @keyframes pulse-title {
+            from { opacity: 0.9; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.02); }
+        }
+
+        #ponente {
+            font-size: clamp(1em, 2vw, 1.4em);
+            color: #ffd700; 
+            font-weight: 600;
+            margin: 8px 0 0 0;
+        }
+
+        #mensaje {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: #bbdefb;
+            font-weight: 300;
+        }
+
+        /* ---------------------------------------------------- */
+        /* ESTILO DEL BOTÓN DE AUDIO */
+        /* ---------------------------------------------------- */
+        #audio-toggle-btn {
+            background-color: #ffd700; /* Dorado */
+            color: #0f1d44; /* Azul oscuro */
+            border: none;
+            padding: 10px 25px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #audio-toggle-btn:hover {
+            background-color: #ffc400;
+            transform: translateY(-2px);
+        }
+
+        #audio-toggle-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ---------------------------------------------------- */
+        /* ESTILO DEL CONTADOR MEJORADO */
+        /* ---------------------------------------------------- */
+        #contador-box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 25px; 
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5); 
+        }
+        
+        .reloj-segmento {
+            min-width: 100px; 
+            padding: 10px 5px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05); 
+            transition: transform 0.3s ease;
+        }
+
+        .reloj-segmento:hover {
+             transform: translateY(-5px); 
+        }
+
+        .tiempo-valor {
+            font-size: clamp(3.5em, 8vw, 6em); 
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .tiempo-unidad {
+            font-size: clamp(0.8em, 2vw, 1.3em);
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #90caf9; 
+            margin-top: 5px;
+        }
+
+        /* ---------------------------------------------------- */
+        /* EFECTO DE FINALIZACIÓN */
+        /* ---------------------------------------------------- */
+        #contador-box.finalizado {
+            box-shadow: 0 0 50px #4CAF50; 
+            background-color: rgba(76, 175, 80, 0.3); 
+            animation: pulse-finalizado 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-finalizado {
+            from { box-shadow: 0 0 30px #4CAF50; }
+            to { box-shadow: 0 0 60px #4CAF50; }
+        }
+
+        .finalizado .tiempo-valor {
+            color: #c8e6c9 !important; 
+            text-shadow: 0 0 15px #4CAF50, 0 0 30px #4CAF50;
+        }
+        
+        .finalizado .tiempo-unidad {
+            color: #a5d6a7 !important;
+        }
+
+        /* ---------------------------------------------------- */
+        /* RESPONSIVE DESIGN (Móviles) */
+        /* ---------------------------------------------------- */
+        @media (max-width: 600px) {
+            #contador-box {
+                flex-direction: row; 
+                gap: 10px;
+                padding: 20px 10px;
+            }
+            .reloj-segmento {
+                min-width: 70px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="info-box">
+        <h1 id="titulo-presentacion">Alto Rendimiento Empresarial</h1>
+        <p id="ponente">Presentado por: Daniel Crespo</p>
+    </div>
+    
+    <div id="mensaje">
+        La sesión comenzará exactamente a las 18:05 (Hora de España peninsular).
+    </div>
+
+    <div id="contador-box">
+        <div class="reloj-segmento">
+            <div id="horas" class="tiempo-valor">00</div>
+            <div class="tiempo-unidad">Horas</div>
+        </div>
+        <div class="reloj-segmento">
+            <div id="minutos" class="tiempo-valor">00</div>
+            <div class="tiempo-unidad">Minutos</div>
+        </div>
+        <div class="reloj-segmento">
+            <div id="segundos" class="tiempo-valor">00</div>
+            <div class="tiempo-unidad">Segundos</div>
+        </div>
+    </div>
+    
+    <button id="audio-toggle-btn">
+        ▶️ Iniciar Música de Espera
+    </button>
+    
+    <audio id="alarmaSonido" src="alarma_inicio_bonita.mp3" preload="auto"></audio> 
+
+    <script>
+        // --- CONFIGURACIÓN DE ZONA HORARIA Y HORA FINAL ---
+        const HORA_FINAL = 18;
+        const MINUTO_FINAL = 5;
+        const ZONA_HORARIA = 'Europe/Madrid'; 
+        // --------------------------------------------------
+        
+        const elementos = {
+            horas: document.getElementById('horas'),
+            minutos: document.getElementById('minutos'),
+            segundos: document.getElementById('segundos'),
+            mensaje: document.getElementById('mensaje'),
+            alarma: document.getElementById('alarmaSonido'),
+            contadorBox: document.getElementById('contador-box'),
+            audioFondo: document.getElementById('audioFondo'), // Audio de fondo (mi-audio.mp3)
+            audioBtn: document.getElementById('audio-toggle-btn') // Botón
+        };
+        
+        let intervalo;
+        
+        // Función para controlar la reproducción del audio de fondo
+        function toggleAudio() {
+            if (elementos.audioFondo.paused) {
+                elementos.audioFondo.play()
+                    .then(() => {
+                        elementos.audioBtn.innerHTML = "⏸️ Pausar Música";
+                    })
+                    .catch(error => {
+                        console.error("No se pudo iniciar la reproducción:", error);
+                        // Mostrar un mensaje de error si el navegador bloquea el play por alguna razón
+                        elementos.audioBtn.innerHTML = "❌ Error (Recargar)"; 
+                    });
+            } else {
+                elementos.audioFondo.pause();
+                elementos.audioBtn.innerHTML = "▶️ Iniciar Música de Espera";
+            }
+        }
+        
+        // Asignar el evento al botón
+        elementos.audioBtn.addEventListener('click', toggleAudio);
+
+
+        function actualizarContador() {
+            // Obtener la hora actual en la zona horaria de España
+            const ahora = new Date();
+            const ahoraEnMadrid = new Date(ahora.toLocaleString("en-US", { timeZone: ZONA_HORARIA }));
+            
+            // Calcular la fecha y hora objetivo
+            const objetivo = new Date(ahoraEnMadrid);
+            objetivo.setHours(HORA_FINAL, MINUTO_FINAL, 0, 0); 
+            
+            if (ahoraEnMadrid.getTime() > objetivo.getTime()) {
+                objetivo.setDate(objetivo.getDate() + 1); 
+            }
+
+            // Calcular la diferencia en milisegundos
+            let diferencia = objetivo.getTime() - ahoraEnMadrid.getTime();
+            
+            if (diferencia <= 0) {
+                // TIEMPO TERMINADO
+                clearInterval(intervalo);
+                elementos.horas.textContent = "00";
+                elementos.minutos.textContent = "00";
+                elementos.segundos.textContent = "00";
+                elementos.mensaje.innerHTML = "<strong>¡LA PRESENTACIÓN ESTÁ EN VIVO AHORA MISMO!</strong>"; 
+                
+                // Efecto visual de finalización
+                elementos.contadorBox.classList.add('finalizado');
+                
+                // Pausar el audio de fondo
+                elementos.audioFondo.pause();
+                elementos.audioBtn.style.display = 'none'; // Ocultar el botón
+                
+                // Intentar reproducir la alarma de inicio
+                elementos.alarma.play().catch(error => {
+                    console.error("No se pudo reproducir la alarma.", error);
+                });
+                return;
+            }
+
+            // Cálculo del tiempo restante y formato
+            const horas = Math.floor(diferencia / (1000 * 60 * 60));
+            diferencia -= horas * (1000 * 60 * 60);
+            
+            const minutos = Math.floor(diferencia / (1000 * 60));
+            diferencia -= minutos * (1000 * 60);
+            
+            const segundos = Math.floor(diferencia / 1000);
+
+            const formato = (n) => String(n).padStart(2, '0');
+
+            // Actualizar la interfaz
+            elementos.horas.textContent = formato(horas);
+            elementos.minutos.textContent = formato(minutos);
+            elementos.segundos.textContent = formato(segundos);
+        }
+
+        // Iniciar el contador y actualizar cada 1 segundo (1000ms)
+        actualizarContador(); 
+        intervalo = setInterval(actualizarContador, 1000);
+
+    </script>
+
+</body>
+</html>
